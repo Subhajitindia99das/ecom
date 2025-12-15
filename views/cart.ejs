@@ -1,7 +1,29 @@
 <%- include('./partials/header') %>
     <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
         <div class="w-[30%] rounded-md overflow-hidden">
-            <div class="w-full h-80 bg-yellow-500"></div>
+            <div class="w-full h-80 bg-yellow-500">
+                <!-- <img class="h-[12rem]" src="data:image/jpeg;base64, <%= user.cart[0].image.toString('base64') %>" alt="Just image"> -->
+                <div class="w-full h-80 bg-yellow-500 flex gap-5 flex-wrap justify-center">
+                    <% if (user.cart && user.cart.length > 0) { %>
+                        <% user.cart.forEach(product => { %>
+                            <div class="rounded-md overflow-hidden bg-white p-3">
+                                <% if (product.image) { %>
+                                    <img
+                                        class="h-[18rem]"
+                                        src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                                        alt="<%= product.name %>"
+                                    >
+                                <% } %>
+
+                                <!-- <h3 class="text-2xl"><%= product.name %></h3> -->
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>Your cart is empty</p>
+                    <% } %>
+                </div>
+
+            </div>
             <div class="w-full flex justify-between px-5 py-4">
                 <h3 class="text-2xl">Clinge Bag</h3>
                 <div class="flex items-center gap-2">
