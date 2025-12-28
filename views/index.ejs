@@ -1,46 +1,142 @@
 <%- include('./partials/header') %>
 
-    <% if(error.length>0){ %>
-        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
-            <span class="inline-block mt-1 mb-1 text-white">
-                <%= error %>
-            </span>
-        </div>
-        <% } %>
-            <div class="w-full h-screen flex px-20">
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                        <h3 class="text-4xl">welcome to <span class="text-blue-400 font-semibold">Scatch</span></h3>
-                        <h4 class="text-2xl mb-5">create your account</h4>
-                        <form autocomplete="off" action="/users/register" method="post">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="text" placeholder="Full Name" name="fullname">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Create My Account">
-                        </form>
-                    </div>
-                </div>
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                        <h4 class="text-2xl capitalize mb-5">login your account</h4>
-                        <form autocomplete="off" action="/users/login" method="post">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Login">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <%- include('./partials/footer') %>
+<!-- ================= BACKGROUND LAYER ================= -->
+<div class="fixed inset-0 -z-10
+            bg-gradient-to-br
+            from-white via-slate-100 to-white
+            dark:from-black dark:via-zinc-900 dark:to-black">
+</div>
+
+<!-- ================= GLASS TOAST ERROR ================= -->
+<% if (error && error.length > 0) { %>
+  <div
+    class="fixed top-32 left-1/2 -translate-x-1/2
+           z-[1000]
+           px-6 py-3
+           rounded-2xl
+           backdrop-blur-2xl
+           bg-red-500/20
+           border border-red-300/30
+           text-red-600 dark:text-red-400
+           shadow-[0_20px_40px_rgba(0,0,0,0.25)]
+           animate-fadeIn">
+    <%= error %>
+  </div>
+<% } %>
+
+<!-- ================= MAIN ================= -->
+<div class="min-h-screen flex items-center justify-center px-4 pt-32 pb-16">
+
+  <div
+    class="w-full max-w-6xl
+           flex flex-col md:flex-row gap-12">
+
+    <!-- ================= REGISTER ================= -->
+    <div
+      class="flex-1
+             rounded-[2rem]
+             backdrop-blur-3xl
+             bg-white/20 dark:bg-black/25
+             border border-white/30
+             shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+             p-10
+             transform transition
+             hover:-translate-y-2
+             animate-float">
+
+      <h2 class="text-4xl font-semibold mb-2">
+        Welcome to <span class="text-blue-400">Scatch</span>
+      </h2>
+      <p class="opacity-70 mb-10">Create your account</p>
+
+      <form action="/users/register" method="post" class="space-y-6">
+
+        <input class="glass-input" type="text" name="fullname" placeholder="Full Name" required>
+        <input class="glass-input" type="email" name="email" placeholder="Email" required>
+        <input class="glass-input" type="password" name="password" placeholder="Password" required>
+
+        <button class="glass-button">
+          Create My Account
+        </button>
+      </form>
+    </div>
+
+    <!-- ================= LOGIN ================= -->
+    <div
+      class="flex-1
+             rounded-[2rem]
+             backdrop-blur-3xl
+             bg-white/20 dark:bg-black/25
+             border border-white/30
+             shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+             p-10
+             transform transition
+             hover:-translate-y-2
+             animate-float delay-150">
+
+      <h2 class="text-3xl font-semibold mb-10">
+        Login your account
+      </h2>
+
+      <form action="/users/login" method="post" class="space-y-6">
+
+        <input class="glass-input" type="email" name="email" placeholder="Email" required>
+        <input class="glass-input" type="password" name="password" placeholder="Password" required>
+
+        <button class="glass-button">
+          Login
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= STYLES ================= -->
+<style>
+.glass-input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.35);
+  color: #000;
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(12px);
+}
+.dark .glass-input {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+.glass-button {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 15px 40px rgba(59,130,246,0.4);
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn .4s ease-out;
+}
+</style>
+
+<%- include('./partials/footer') %>

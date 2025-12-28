@@ -1,67 +1,131 @@
 <%- include('./partials/header') %>
 
-<div class="w-full min-h-screen flex px-20 py-20 gap-10">
+<!-- ================= BACKGROUND LAYER ================= -->
+<div class="fixed inset-0 -z-10
+            bg-gradient-to-br
+            from-white via-slate-100 to-white
+            dark:from-black dark:via-zinc-900 dark:to-black">
+</div>
 
-    <!-- CART ITEMS -->
-    <div class="w-[60%]">
-        <h2 class="text-xl mb-4">My Cart</h2>
+<!-- ================= CART PAGE ================= -->
+<div class="min-h-screen px-4 md:px-20 pt-32 pb-16">
 
-        <% if (user.cart.length === 0) { %>
-            <p>Your cart is empty</p>
-        <% } %>
+  <div class="flex flex-col lg:flex-row gap-10 max-w-7xl mx-auto">
 
+    <!-- ================= CART ITEMS ================= -->
+    <div class="flex-1">
+
+      <h2 class="text-2xl font-semibold mb-6">
+        My Cart
+      </h2>
+
+      <% if (user.cart.length === 0) { %>
+        <div
+          class="rounded-2xl
+                 bg-white/20 dark:bg-black/25
+                 backdrop-blur-2xl
+                 border border-white/30
+                 p-8 text-center shadow-lg">
+          Your cart is empty
+        </div>
+      <% } %>
+
+      <div class="space-y-6">
         <% user.cart.forEach(product => { %>
-            <div class="flex gap-5 border p-4 mb-4 items-center">
 
-                <% if (product.image) { %>
-                    <img
-                        class="h-32"
-                        src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
-                    />
-                <% } %>
+          <!-- CART ITEM -->
+          <div
+            class="flex flex-col sm:flex-row gap-6
+                   rounded-2xl
+                   bg-white/20 dark:bg-black/25
+                   backdrop-blur-2xl
+                   border border-white/30
+                   shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+                   p-6">
 
-                <div class="flex-1">
-                    <h3 class="text-lg"><%= product.name %></h3>
-                    <p>₹ <%= product.price %></p>
+            <% if (product.image) { %>
+              <img
+                class="h-32 w-32 object-contain rounded-xl
+                       bg-white/40 dark:bg-white/10 p-2"
+                src="data:image/jpeg;base64,<%= product.image.toString('base64') %>">
+            <% } %>
 
-                    <form action="/removefromcart/<%= product._id %>" method="post">
-                        <button class="text-red-600 mt-2">Remove</button>
-                    </form>
-                </div>
+            <div class="flex-1 flex flex-col justify-between">
+
+              <div>
+                <h3 class="text-lg font-medium">
+                  <%= product.name %>
+                </h3>
+                <p class="opacity-70 mt-1">
+                  ₹ <%= product.price %>
+                </p>
+              </div>
+
+              <form action="/removefromcart/<%= product._id %>" method="post">
+                <button
+                  class="mt-4 text-sm text-red-500 hover:underline">
+                  Remove
+                </button>
+              </form>
             </div>
+
+          </div>
         <% }) %>
+      </div>
     </div>
 
-    <!-- PRICE SUMMARY -->
-    <div class="w-[40%] border p-6 h-fit">
-        <h3 class="text-lg mb-4">Price Details</h3>
+    <!-- ================= PRICE SUMMARY ================= -->
+    <div class="w-full lg:w-[380px]">
 
-        <div class="flex justify-between">
+      <div
+        class="sticky top-32
+               rounded-3xl
+               bg-white/25 dark:bg-black/30
+               backdrop-blur-3xl
+               border border-white/30
+               shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+               p-8">
+
+        <h3 class="text-xl font-semibold mb-6">
+          Price Details
+        </h3>
+
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between">
             <span>Total</span>
             <span>₹ <%= total %></span>
-        </div>
+          </div>
 
-        <div class="flex justify-between mt-2">
+          <div class="flex justify-between opacity-70">
             <span>Platform Fee</span>
             <span>₹ 20</span>
+          </div>
         </div>
 
-        <hr class="my-4">
+        <hr class="my-6 border-white/30">
 
-        <div class="flex justify-between font-semibold text-green-600">
-            <span>Total Amount</span>
-            <span>₹ <%= total + 20 %></span>
+        <div class="flex justify-between font-semibold text-green-500">
+          <span>Total Amount</span>
+          <span>₹ <%= total + 20 %></span>
         </div>
+
         <% if (user.cart.length > 0) { %>
-            <form action="/placeorder" method="post" class="mt-6">
-                <button class="w-full bg-black text-white py-3 rounded">
-                    Place Order
-                </button>
-            </form>
+          <form action="/placeorder" method="post" class="mt-8">
+            <button
+              class="w-full py-3 rounded-full
+                     bg-gradient-to-r from-blue-500 to-blue-400
+                     text-white font-medium
+                     shadow-[0_15px_40px_rgba(59,130,246,0.45)]
+                     hover:opacity-90 transition">
+              Place Order
+            </button>
+          </form>
         <% } %>
 
+      </div>
     </div>
 
+  </div>
 </div>
 
 <%- include('./partials/footer') %>

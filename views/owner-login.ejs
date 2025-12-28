@@ -1,28 +1,79 @@
-<!-- <%- include('./partials/header') %>
-    <div class="w-full h-screen flex px-20">
-        <div class="w-1/2 flex items-center justify-center h-screen">
-            <div class="w-full px-32">
-                <h4 class="text-2xl capitalize mb-5">Admin Access</h4>
-                <form action="/create" method="post">
-                    <input class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                        type="email" placeholder="Email" name="email">
-                    <input class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                        type="password" placeholder="Password" name="password">
-                    <input class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit" value="Login">
-                </form>
-            </div>
-        </div>
-    </div>
-    <%- include('./partials/footer') %> -->
-
 <%- include('./partials/header') %>
 
-<h2>Admin Login</h2>
+<!-- ================= BACKGROUND ================= -->
+<div class="fixed inset-0 -z-10
+            bg-gradient-to-br
+            from-white via-slate-100 to-white
+            dark:from-black dark:via-zinc-900 dark:to-black">
+</div>
 
-<form action="/owners/login" method="post">
-    <input name="email" placeholder="Admin Email" required />
-    <input name="password" type="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
+<!-- ================= ADMIN LOGIN ================= -->
+<div class="min-h-screen flex items-center justify-center px-4 pt-32 pb-16">
+
+  <div
+    class="w-full max-w-md
+           rounded-3xl
+           backdrop-blur-3xl
+           bg-white/20 dark:bg-black/30
+           border border-white/30
+           shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+           p-10
+           animate-float">
+
+    <h2 class="text-3xl font-semibold text-center mb-2">
+      Admin Login
+    </h2>
+    <p class="text-center opacity-70 mb-8">
+      Owner access only
+    </p>
+
+    <form action="/owners/login" method="post" class="space-y-6">
+
+      <input
+        class="w-full px-4 py-3 rounded-xl
+               bg-white/70 dark:bg-white/10
+               text-black dark:text-white
+               placeholder-gray-400
+               border border-white/30
+               focus:outline-none focus:ring-2 focus:ring-blue-400"
+        type="email"
+        name="email"
+        placeholder="Admin Email"
+        required>
+
+      <input
+        class="w-full px-4 py-3 rounded-xl
+               bg-white/70 dark:bg-white/10
+               text-black dark:text-white
+               placeholder-gray-400
+               border border-white/30
+               focus:outline-none focus:ring-2 focus:ring-blue-400"
+        type="password"
+        name="password"
+        placeholder="Password"
+        required>
+
+      <button
+        class="w-full py-3 rounded-full
+               bg-gradient-to-r from-blue-500 to-blue-400
+               text-white font-medium
+               shadow-[0_15px_40px_rgba(59,130,246,0.45)]
+               hover:opacity-90 transition">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= FLOAT ANIMATION ================= -->
+<style>
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+</style>
 
 <%- include('./partials/footer') %>

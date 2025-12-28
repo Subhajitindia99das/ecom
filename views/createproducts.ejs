@@ -1,57 +1,162 @@
 <%- include('./partials/header') %>
 
 <% if (!user || user.role !== "owner") { %>
-    <h2 class="text-center text-red-600 mt-10">Access Denied</h2>
+  <div class="min-h-screen flex items-center justify-center text-red-500">
+    Access Denied
+  </div>
 <% return; } %>
 
+<!-- ================= BACKGROUND ================= -->
+<div class="fixed inset-0 -z-10
+            bg-gradient-to-br
+            from-white via-slate-100 to-white
+            dark:from-black dark:via-zinc-900 dark:to-black">
+</div>
+
+<!-- ================= SUCCESS TOAST ================= -->
 <% if (success && success.length > 0) { %>
-    <div class="absolute top-5 left-1/2 -translate-x-1/2 p-3 rounded-md bg-blue-500">
-        <span class="text-white"><%= success %></span>
-    </div>
+  <div
+    class="fixed top-32 left-1/2 -translate-x-1/2
+           z-[1000]
+           px-6 py-3
+           rounded-2xl
+           backdrop-blur-xl
+           bg-blue-500/25
+           border border-blue-300/30
+           text-blue-600 dark:text-blue-400
+           shadow-xl">
+    <%= success %>
+  </div>
 <% } %>
 
-<div class="min-h-screen flex">
-    <!-- LEFT -->
-    <div class="w-[25%] p-6">
-        <a class="block mb-2" href="/owners/admin">Create Product</a>
-    </div>
+<!-- ================= ADMIN DASHBOARD ================= -->
+<div class="min-h-screen px-4 md:px-20 pt-32 pb-16">
 
-    <!-- RIGHT -->
-    <main class="w-3/4 bg-white p-8 shadow ml-4">
-        <!-- CREATE -->
-        <h2 class="text-xl font-bold mb-4">Create New Product</h2>
+  <div class="flex flex-col md:flex-row gap-10 max-w-7xl mx-auto">
 
-        <form action="/products/create" method="post" enctype="multipart/form-data">
-            <input name="image" type="file" required>
-            <input name="name" placeholder="Name" class="border p-2 w-full my-2">
-            <input name="price" placeholder="Price" class="border p-2 w-full my-2">
-            <input name="discount" placeholder="Discount" class="border p-2 w-full my-2">
-            <input name="bgcolor" placeholder="Bg Color" class="border p-2 w-full my-2">
-            <input name="panelcolor" placeholder="Panel Color" class="border p-2 w-full my-2">
-            <input name="textcolor" placeholder="Text Color" class="border p-2 w-full my-2">
+    <!-- ================= SIDEBAR ================= -->
+    <aside
+      class="w-full md:w-[240px]
+             rounded-3xl
+             bg-white/25 dark:bg-black/30
+             backdrop-blur-3xl
+             border border-white/30
+             shadow-[0_20px_60px_rgba(0,0,0,0.25)]
+             p-6 h-fit">
 
-            <button class="bg-blue-500 text-white px-4 py-2 mt-2">Create</button>
-        </form>
+      <h3 class="text-lg font-semibold mb-4">
+        Admin Panel
+      </h3>
 
-        <!-- LIST -->
-        <h2 class="text-xl font-bold mt-10 mb-4">All Products</h2>
+      <nav class="space-y-3 text-sm">
+        <a href="/owners/admin" class="block opacity-80 hover:opacity-100">
+          Create Product
+        </a>
+        <a href="/owners/orders" class="block opacity-80 hover:opacity-100">
+          Orders
+        </a>
+      </nav>
+    </aside>
 
+    <!-- ================= MAIN ================= -->
+    <main
+      class="flex-1
+             rounded-3xl
+             bg-white/25 dark:bg-black/30
+             backdrop-blur-3xl
+             border border-white/30
+             shadow-[0_30px_80px_rgba(0,0,0,0.25)]
+             p-8 md:p-10">
+
+      <!-- ================= CREATE PRODUCT ================= -->
+      <h2 class="text-2xl font-semibold mb-6">
+        Create New Product
+      </h2>
+
+      <form
+        action="/products/create"
+        method="post"
+        enctype="multipart/form-data"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+
+        <input type="file" name="image" required
+          class="col-span-1 md:col-span-2 glass-input">
+
+        <input name="name" placeholder="Product Name" class="glass-input">
+        <input name="price" placeholder="Price" class="glass-input">
+        <input name="discount" placeholder="Discount" class="glass-input">
+        <input name="bgcolor" placeholder="Background Color" class="glass-input">
+        <input name="panelcolor" placeholder="Panel Color" class="glass-input">
+        <input name="textcolor" placeholder="Text Color" class="glass-input">
+
+        <button
+          class="col-span-1 md:col-span-2
+                 mt-4 py-3 rounded-full
+                 bg-gradient-to-r from-blue-500 to-blue-400
+                 text-white font-medium
+                 shadow-[0_15px_40px_rgba(59,130,246,0.45)]
+                 hover:opacity-90 transition">
+          Create Product
+        </button>
+      </form>
+
+      <!-- ================= PRODUCT LIST ================= -->
+      <h2 class="text-2xl font-semibold mb-6">
+        All Products
+      </h2>
+
+      <div class="space-y-4">
         <% products.forEach(product => { %>
-            <div class="border p-3 flex justify-between mb-2">
-                <span><%= product.name %></span>
+          <div
+            class="flex items-center justify-between
+                   rounded-2xl
+                   bg-white/30 dark:bg-white/10
+                   backdrop-blur-xl
+                   border border-white/30
+                   p-4 shadow-md">
 
-                <div class="flex gap-3">
-                    <form action="/products/edit/<%= product._id %>" method="get">
-                        <button class="text-blue-600">Edit</button>
-                    </form>
+            <span class="font-medium">
+              <%= product.name %>
+            </span>
 
-                    <form action="/products/delete/<%= product._id %>" method="post">
-                        <button class="text-red-600">Delete</button>
-                    </form>
-                </div>
+            <div class="flex gap-4 text-sm">
+              <a href="/products/edit/<%= product._id %>"
+                 class="text-blue-500 hover:underline">
+                Edit
+              </a>
+
+              <form action="/products/delete/<%= product._id %>" method="post">
+                <button class="text-red-500 hover:underline">
+                  Delete
+                </button>
+              </form>
             </div>
+          </div>
         <% }) %>
+      </div>
+
     </main>
+  </div>
 </div>
+
+<!-- ================= INPUT STYLE ================= -->
+<style>
+.glass-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #000;
+}
+.dark .glass-input {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+</style>
 
 <%- include('./partials/footer') %>

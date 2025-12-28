@@ -1,49 +1,152 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scatch</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <!-- Tailwind config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
 </head>
 
-<body class="font-['helvetica_now_display']">
-    <nav class="flex w-full fixed justify-between py-3">
-        <h3 class="text-xl">Scatch</h3>
-        <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
-        <% if(loggedin) { %>
-            <div class="flex gap-5">
-                <a href="">Shop</a>
-                <a href="/cart">Cart</a>
-                <a href="">My account</a>
-                <a href="/users/logout" class="text-red-600">Logout</a>
-            </div>
+<body class="bg-gray-100 dark:bg-black text-black dark:text-white transition-colors duration-300">
+
+<!-- ================= GLASS NAVBAR ================= -->
+<nav
+  class="fixed top-4 left-1/2 z-[999]
+         w-[94%] -translate-x-1/2 rounded-2xl
+         backdrop-blur-3xl
+         bg-white/10 dark:bg-black/10
+         border border-white/10 dark:border-white/10
+         shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+
+  <div class="flex items-center justify-between px-6 py-3">
+
+    <!-- Logo -->
+    <a href="/" class="text-xl font-semibold tracking-wide">
+      Scatch
+    </a>
+
+    <!-- Desktop -->
+    <div class="hidden md:flex items-center gap-6 text-sm">
+
+      <% if (user) { %>
+        <a href="/shop" class="hover:opacity-70">Shop</a>
+        <a href="/cart" class="hover:opacity-70">Cart</a>
+
+        <% if (user.role === "owner") { %>
+          <a href="/owners/admin" class="hover:opacity-70">Admin</a>
+        <% } else { %>
+          <a href="/myaccount" class="hover:opacity-70">My Account</a>
         <% } %>
-    </nav> -->
 
+        <!-- Theme toggle -->
+        <button onclick="toggleTheme()"
+          class="w-9 h-9 rounded-full flex items-center justify-center
+                 bg-black/10 dark:bg-white/10">
+          <i id="themeIcon" class="ri-moon-line"></i>
+        </button>
 
-<nav class="flex w-full fixed justify-between py-3">
-    <h3 class="text-xl">Scatch</h3>
+        <a href="/users/logout"
+          class="px-4 py-1.5 rounded-full
+                 bg-black text-white dark:bg-white dark:text-black">
+          Logout
+        </a>
+      <% } else { %>
+        <a href="/" class="hover:opacity-70">Login</a>
+
+        <button onclick="toggleTheme()"
+          class="w-9 h-9 rounded-full flex items-center justify-center
+                 bg-black/10 dark:bg-white/10">
+          <i id="themeIcon" class="ri-moon-line"></i>
+        </button>
+
+        <a href="/register"
+          class="px-4 py-1.5 rounded-full
+                 bg-black text-white dark:bg-white dark:text-black">
+          Register
+        </a>
+      <% } %>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button onclick="toggleMenu()"
+      class="md:hidden w-9 h-9 rounded-full
+             flex items-center justify-center
+             bg-black/10 dark:bg-white/10">
+      <i class="ri-menu-3-line"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu"
+    class="hidden md:hidden px-6 pb-4 space-y-3 text-sm">
 
     <% if (user) { %>
-        <div class="flex gap-5">
-            <a href="/shop">Shop</a>
-            <a href="/cart">Cart</a>
+      <a href="/shop" class="block">Shop</a>
+      <a href="/cart" class="block">Cart</a>
 
-            <% if (user.role === "owner") { %>
-                <a href="/owners/admin">Admin</a>
-            <% } else { %>
-                <a href="/myaccount">My Account</a>
-            <% } %>
+      <% if (user.role === "owner") { %>
+        <a href="/owners/admin" class="block">Admin</a>
+      <% } else { %>
+        <a href="/myaccount" class="block">My Account</a>
+      <% } %>
 
-            <a href="/users/logout" class="text-red-600">Logout</a>
-        </div>
+      <button onclick="toggleTheme()" class="block w-full text-left">
+        Toggle Theme
+      </button>
+
+      <a href="/users/logout" class="block text-red-500">Logout</a>
     <% } else { %>
-        <div class="flex gap-5">
-            <a href="/">Login</a>
-            <a href="/register">Register</a>
-        </div>
+      <a href="/" class="block">Login</a>
+      <a href="/register" class="block">Register</a>
+      <button onclick="toggleTheme()" class="block w-full text-left">
+        Toggle Theme
+      </button>
     <% } %>
+  </div>
 </nav>
+
+<!-- Spacer -->
+<div class="h-28"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+  const html = document.documentElement;
+  const icon = document.getElementById("themeIcon");
+
+  function setTheme(theme) {
+    if (theme === "dark") {
+      html.classList.add("dark");
+      if (icon) icon.className = "ri-sun-line";
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.classList.remove("dark");
+      if (icon) icon.className = "ri-moon-line";
+      localStorage.setItem("theme", "light");
+    }
+  }
+
+  function toggleTheme() {
+    setTheme(html.classList.contains("dark") ? "light" : "dark");
+  }
+
+  setTheme(localStorage.getItem("theme") || "light");
+
+  function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("hidden");
+  }
+</script>
+
+</body>
+</html>

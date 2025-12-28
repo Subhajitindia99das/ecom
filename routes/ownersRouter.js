@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
         sameSite: "strict"
     });
 
-    res.send("Owner logged in");
+    res.redirect("/owners/admin");
 });
 
 
