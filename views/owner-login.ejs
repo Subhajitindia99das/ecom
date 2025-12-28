@@ -1,4 +1,4 @@
-<%- include('./partials/header') %>
+<!-- <%- include('./partials/header') %>
     <div class="w-full h-screen flex px-20">
         <div class="w-1/2 flex items-center justify-center h-screen">
             <div class="w-full px-32">
@@ -13,4 +13,16 @@
             </div>
         </div>
     </div>
-    <%- include('./partials/footer') %>
+    <%- include('./partials/footer') %> -->
+
+<%- include('./partials/header') %>
+
+<h2>Admin Login</h2>
+
+<form action="/owners/login" method="post">
+    <input name="email" placeholder="Admin Email" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+</form>
+
+<%- include('./partials/footer') %>

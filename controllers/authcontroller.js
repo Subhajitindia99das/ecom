@@ -5,7 +5,12 @@ const {generateToken} = require("../utils/generateToken");
 
 module.exports.registerUser = async (req, res) => {
     try{
-        let {fullname, email, password} = req.body;
+        let { fullname, email, password } = req.body;
+
+        if (!fullname || !email || !password) {
+            req.flash("error", "All fields are required");
+            return res.redirect("/");
+        }
 
         let userExist = await userModel.findOne({email: email})
         if(userExist) {
@@ -22,8 +27,18 @@ module.exports.registerUser = async (req, res) => {
                         password: hash
                     })
                     
-                    let token = generateToken(usercreate);
-                    res.cookie("token", token)
+                    // let token = generateToken(usercreate);
+                    let token = generateToken({
+                        id: usercreate._id,
+                        email: usercreate.email,
+                        role: "user"
+                    });
+
+                    res.cookie("token", token, {
+                        httpOnly: true,
+                        sameSite: "strict"
+                    });
+
                     res.redirect("/shop")
                 }
             })
@@ -40,6 +55,11 @@ module.exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if (!email || !password) {
+            req.flash("error", "All fields are required");
+            return res.redirect("/");
+        }
+
         const user = await userModel.findOne({ email });
 
         if (!user) {
@@ -54,8 +74,16 @@ module.exports.loginUser = async (req, res) => {
             }
 
             if (result) {
-                const token = generateToken(user);
-                res.cookie("token", token);
+                let token = generateToken({
+                    id: user._id,
+                    email: user.email,
+                    role: "user"
+                });
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    sameSite: "strict"
+                });
+
                 return res.redirect("/shop");
             } else {
                 req.flash("error", "Invalid email or password");

@@ -1,0 +1,37 @@
+<%- include('./partials/header') %>
+
+<div class="px-20 py-10">
+
+    <h2 class="text-2xl mb-4">My Account</h2>
+
+    <!-- USER INFO -->
+    <div class="border p-4 mb-6">
+        <p><strong>Name:</strong> <%= user.fullname %></p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+    </div>
+
+    <!-- ORDERS -->
+    <h3 class="text-xl mb-3">My Orders</h3>
+
+    <% if (user.orders.length === 0) { %>
+        <p>No orders yet.</p>
+    <% } %>
+
+    <% user.orders.forEach(order => { %>
+        <div class="border p-4 mb-4">
+            <p><strong>Order ID:</strong> <%= order._id %></p>
+            <p><strong>Status:</strong> <%= order.status %></p>
+            <p><strong>Total:</strong> ₹ <%= order.totalAmount %></p>
+
+            <p class="mt-2"><strong>Products:</strong></p>
+            <ul>
+                <% order.products.forEach(p => { %>
+                    <li><%= p.name %> — ₹ <%= p.price %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% }) %>
+
+</div>
+
+<%- include('./partials/footer') %>

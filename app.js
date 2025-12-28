@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const app = express();
 
@@ -11,7 +12,6 @@ const indexRouter = require("./routes/index")
 const expressSession = require("express-session")
 const flash = require("connect-flash")
 
-require("dotenv").config()
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
@@ -27,7 +27,7 @@ app.use(
 app.use(flash());
 app.set("view engine", "ejs")
 
-
+app.use(require("./middlewares/setUser"));
 app.use("/", indexRouter)
 app.use("/owners", ownersRouter)
 app.use("/users", usersRouter)
