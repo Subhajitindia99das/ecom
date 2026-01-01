@@ -1,9 +1,15 @@
-require("dotenv").config()
+require("dotenv").config();
+
+const mongoose = require("mongoose");
+mongoose
+  .connect(process.env.MONGODB_URL)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB error:", err));
+
 const express = require("express");
 const app = express();
 
 const cookieParser = require("cookie-parser");
-const db = require("./config/mongoose-connection")
 const path = require("path");
 const ownersRouter = require("./routes/ownersRouter")
 const usersRouter = require("./routes/usersRouter")
@@ -37,7 +43,5 @@ app.use("/products", productsRouter)
 app.get("/", (req, res) => {
     res.send("It's running now")
 })
-
-
 
 app.listen(3000);

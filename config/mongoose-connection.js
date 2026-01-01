@@ -1,14 +1,17 @@
-const mongoose = require('mongoose');
-const dbgr = require('debug')("development:mongoose")
-const config = require('config')
+// const mongoose = require("mongoose");
+// const dbgr = require("debug")("development:mongoose");
 
-mongoose
-.connect(`${config.get("MONGODB_URI")}/scatch`)
-.then(function() {
-    dbgr("It's connected");
-})
-.catch(function(err) {
-    dbgr(err);
-})
+// if (!process.env.MONGODB_URL) {
+//     throw new Error("❌ MONGODB_URI is not defined in .env file");
+// }
 
-module.exports = mongoose.connection;
+// mongoose
+//     .connect(process.env.MONGODB_URL)
+//     .then(() => {
+//         dbgr("✅ MongoDB connected successfully");
+//     })
+//     .catch((err) => {
+//         console.error("❌ MongoDB connection error:", err);
+//     });
+
+// module.exports = mongoose.connection;
